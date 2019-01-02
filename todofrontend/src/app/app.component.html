@@ -2,19 +2,19 @@
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
 
-		<div class="todos" *ngIf="todosList">
-			<table class="table">
-				<thead class="h">
-				<tr class="h">
-					<th class="h">Title</th>
-					<th class="h">Description</th>
-					<th class="h">Date</th>
-					<th class="h">Status</th>
-					<th class="h">Options</th>
+		<div  *ngIf="todosList">
+			<table class="table table-sm">
+				<thead >
+				<tr>
+					<th >Title</th>
+					<th >Description</th>
+					<th >Date</th>
+					<th >Status</th>
+					<th style="width: 20%">Options</th>
 				</tr>
 				</thead>
 				<tbody>
-				<tr class="todo" (dblclick)="editTodo(todo)" *ngFor="let todo of todosList">
+				<tr (dblclick)="editTodo(todo)" *ngFor="let todo of todosList">
 
 					<ng-container *ngIf="!editTodos.includes(todo); else editTD">
 						<td>{{todo.title}}</td>
@@ -50,16 +50,19 @@
 						</td>
 					</ng-template>
 
-					<td class="o">
-						<button class="btn btn-success" (click)="doneTodo(todo)">
-							<i class="fa fa-check"></i>
-						</button>
-						<button class="btn btn-primary" (click)="editTodo(todo)">
-							<i class="fa fa-pencil"></i>
-						</button>
-						<button class="btn btn-danger" (click)="deleteTodo(todo)">
-							<i class="fa fa-trash"></i>
-						</button>
+					<td style="width: 20%">
+						<div class="btn-toolbar" style="justify-content: space-around">
+							<button class="btn btn-sm btn-success" (click)="doneTodo(todo)">
+								<i class="fa fa-check"></i>
+							</button>
+							<button class="btn btn-sm btn-primary" (click)="editTodo(todo)">
+								<i class="fa fa-pencil"></i>
+							</button>
+							<button class="btn btn-sm btn-danger" (click)="deleteTodo(todo)">
+								<i class="fa fa-trash"></i>
+							</button>
+						</div>
+
 					</td>
 
 				</tr>

@@ -19,7 +19,6 @@ export class AppComponent  implements OnInit {
   editTodos: Todo[] = [];
 
   ngOnInit(): void {
-    console.log("bla");
     this.todoService.getTodos()
       .subscribe(todos => {
         this.todosList = todos;
@@ -45,7 +44,7 @@ export class AppComponent  implements OnInit {
     } else {
       this.editTodos.splice(this.editTodos.indexOf(todo), 1);
       this.todoService.editTodo(id, todo).subscribe(res => {
-        alert('Update Successful');
+        console.log('Update Successful');
       }, err => {
         this.editTodo(todo);
         alert('Update Failed');
@@ -57,7 +56,7 @@ export class AppComponent  implements OnInit {
 
   doneTodo(todo: Todo) {
     todo.status = 'Done';
-    this.editTodo(todo)
+    this.todoService.editTodo(todo._id, todo)
   }
 
   submitTodo(event, todo: Todo) {
