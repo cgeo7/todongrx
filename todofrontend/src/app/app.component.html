@@ -2,7 +2,7 @@
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
 
-		<div  *ngIf="todosList">
+		<div  *ngIf="todosList$ | async">
 			<table class="table table-sm">
 				<thead >
 				<tr>
@@ -14,7 +14,7 @@
 				</tr>
 				</thead>
 				<tbody>
-				<tr (dblclick)="editTodo(todo)" *ngFor="let todo of todosList">
+				<tr (dblclick)="editTodo(todo)" *ngFor="let todo of todosList$ | async">
 
 					<ng-container *ngIf="!editTodos.includes(todo); else editTD">
 						<td>{{todo.title}}</td>

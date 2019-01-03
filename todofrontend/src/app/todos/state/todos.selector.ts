@@ -1,7 +1,12 @@
 import {State} from '../../reducers';
 import {createSelector} from '@ngrx/store';
 
+// export const selectTodoState = createFeatureSelector<TodoState>('todos');
 export const selectTodoState = (state: State) => state.todos;
+export const selectAllTodos = createSelector(
+  selectTodoState,
+  todos => Object.values(todos.todosEntities)
+);
 
 // export const selectTodoIds = createSelector(
 //   selectTodoState,
@@ -13,9 +18,3 @@ export const selectTodoState = (state: State) => state.todos;
 //   state => state.todos
 // );
 
-export const selectTodoList = createSelector(
-  selectTodoState,
-  state => {
-    const ids = state.ids.sort()
-  }
-)

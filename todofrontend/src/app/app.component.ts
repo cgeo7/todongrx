@@ -3,6 +3,8 @@ import {TodosService} from './todos/todos.service';
 import {Todo} from './models/todo.model'
 import {State} from './reducers';
 import {Store} from '@ngrx/store';
+import {CreateTodo, RequestedTodos} from './todos/state/todos.actions';
+import {selectAllTodos} from './todos/state/todos.selector';
 
 @Component({
   selector: 'app-root',
@@ -17,35 +19,29 @@ export class AppComponent implements OnInit {
   ) {
   }
 
-  foo() {
-    this.store.dispatch({
-      type: 'REQUEST_TODOS', payload: {}
-    })
-  }
-
   public newTodo: Todo = new Todo();
 
-  todosList: Todo[];
+  todosList$ = this.store.select(selectAllTodos);
   editTodos: Todo[] = [];
 
   ngOnInit(): void {
-    this.todoService.getTodos()
-      .subscribe(todos => this.todosList = todos);
+    this.store.dispatch(new RequestedTodos())
   }
 
 
   create() {
-    this.todoService.createTodo(this.newTodo)
-      .subscribe((res) => {
-        this.todosList.push(res);
-        this.newTodo = new Todo();
-      }, err => alert("Failed to create Todo!"));
+    this.store.dispatch(new CreateTodo({todo: this.newTodo}))
+    // this.todoService.createTodo(this.newTodo)
+    //   .subscribe((res) => {
+    //     this.todosList.push(res);
+    //     this.newTodo = new Todo();
+    //   }, err => alert("Failed to create Todo!"));
   }
 
   editTodo(todo: Todo, id: string = todo._id) {
-    if (!this.todosList.includes(todo)) {
-      return;
-    }
+    // if (!this.todosList.includes(todo)) {
+    //   return;
+    // }
     
     if (!this.editTodos.includes(todo)) {
       this.editTodos.push(todo)
@@ -75,7 +71,7 @@ export class AppComponent implements OnInit {
 
   deleteTodo(todo: Todo) {
     this.todoService.deleteTodo(todo._id).subscribe(res => {
-      this.todosList.splice(this.todosList.indexOf(todo), 1);
+      // this.todosList.splice(this.todosList.indexOf(todo), 1);
     });
   }
 

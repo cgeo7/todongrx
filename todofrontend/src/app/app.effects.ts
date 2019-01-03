@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {RequestedTodos, RequestedTodosSuccess, TodoActions} from './todos/state/todos.actions';
-import {Todo} from './models/todo.model';
 import {Observable} from 'rxjs';
 import {TodosService} from './todos/todos.service';
 import {map, switchMap} from 'rxjs/operators';

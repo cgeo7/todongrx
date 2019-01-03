@@ -2,11 +2,11 @@ import {Todo} from '../../models/todo.model';
 import {TodoActions, TodoActionsUnion} from './todos.actions';
 
 export interface TodoState {
-  todos: { [key: string]: Todo }
+  todosEntities: { [key: string]: Todo }
 }
 
 const initialState: TodoState = {
-  todos: undefined
+  todosEntities: {}
 };
 
 export const todosReducer = (state: TodoState = initialState, action: TodoActionsUnion) => {
@@ -17,8 +17,8 @@ export const todosReducer = (state: TodoState = initialState, action: TodoAction
       const todo = action.payload.todo;
       return {
         ...state,
-        todos: {
-          ...state.todos,
+        todosEntities: {
+          ...state.todosEntities,
           [todo._id]: todo
         }
       };
@@ -26,26 +26,26 @@ export const todosReducer = (state: TodoState = initialState, action: TodoAction
 
     case TodoActions.DELETE_TODO: {
       const todoId = action.payload.todoId;
-      const todos = Object.keys(state.todos)
+      const todos = Object.keys(state.todosEntities)
         .filter(k => k === todoId)
         .reduce((acc, key) => {
-            acc[key] = state.todos[key];
+            acc[key] = state.todosEntities[key];
             return acc;
           }, {}
         );
       return {
         ...state,
-        todos
+        todosEntities: todos
       };
     }
 
     case TodoActions.DONE_TODO: {
       const todoId = action.payload.todoId;
-      const todo = state.todos[todoId];
+      const todo = state.todosEntities[todoId];
       return {
         ...state,
-        todos: {
-          ...state.todos,
+        todosEntities: {
+          ...state.todosEntities,
           [todoId]: {...todo, status: 'Done'}
         }
       };
@@ -53,19 +53,16 @@ export const todosReducer = (state: TodoState = initialState, action: TodoAction
 
 
     case TodoActions.REQUESTED_TODOS_SUCCESS:
-      const ids: string[] = [];
 
-      const todos = action.payload.todos.reduce((acc, todo) => {
-        ids.push(todo._id);
+      const todos = action.payload.todos.reduce((result, todo) => {
         return ({
-          ...acc,
+          ...result,
           [todo._id]: todo
         });
       }, {});
       return {
         ...state,
-        ids,
-        todos
+        todosEntities: todos
       };
 
 
