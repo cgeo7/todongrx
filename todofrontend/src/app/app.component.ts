@@ -1,16 +1,26 @@
 import {Component, OnInit} from '@angular/core';
 import {TodosService} from './todos/todos.service';
 import {Todo} from './models/todo.model'
+import {State} from './reducers';
+import {Store} from '@ngrx/store';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent  implements OnInit {
+export class AppComponent implements OnInit {
 
   constructor(
-    private todoService: TodosService
+    private todoService: TodosService,
+    private store: Store<State>
   ) {
+  }
+
+  foo() {
+    this.store.dispatch({
+      type: 'REQUEST_TODOS', payload: {}
+    })
   }
 
   public newTodo: Todo = new Todo();
@@ -20,9 +30,7 @@ export class AppComponent  implements OnInit {
 
   ngOnInit(): void {
     this.todoService.getTodos()
-      .subscribe(todos => {
-        this.todosList = todos;
-      });
+      .subscribe(todos => this.todosList = todos);
   }
 
 
