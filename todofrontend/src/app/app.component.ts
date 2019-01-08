@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {TodosService} from './todos/todos.service';
-import {Todo} from './models/todo.model'
-import {State} from './reducers';
+import {TodosClient} from './todos/todos-client.service';
+import {Todo} from './models/todo.model';
 import {Store} from '@ngrx/store';
-import {CreateTodo, RequestedTodos} from './todos/state/todos.actions';
 import {selectAllTodos} from './todos/state/todos.selector';
+import {AppState} from './state/app.reducer';
+import {TodoService} from './todos/todo.service';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +14,9 @@ import {selectAllTodos} from './todos/state/todos.selector';
 export class AppComponent implements OnInit {
 
   constructor(
-    private todoService: TodosService,
-    private store: Store<State>
+    private todosClient: TodosClient,
+    private todoService: TodoService,
+    private store: Store<AppState>
   ) {
   }
 
@@ -25,42 +26,31 @@ export class AppComponent implements OnInit {
   editTodos: Todo[] = [];
 
   ngOnInit(): void {
-    this.store.dispatch(new RequestedTodos())
+    this.todoService.requestTodos();
   }
 
 
   create() {
-    this.store.dispatch(new CreateTodo({todo: this.newTodo}))
-    // this.todoService.createTodo(this.newTodo)
-    //   .subscribe((res) => {
-    //     this.todosList.push(res);
-    //     this.newTodo = new Todo();
-    //   }, err => alert("Failed to create Todo!"));
+    this.todoService.createTodo(this.newTodo);
   }
 
   editTodo(todo: Todo, id: string = todo._id) {
     // if (!this.todosList.includes(todo)) {
     //   return;
     // }
-    
+
     if (!this.editTodos.includes(todo)) {
-      this.editTodos.push(todo)
+      this.editTodos.push(todo);
     } else {
       this.editTodos.splice(this.editTodos.indexOf(todo), 1);
-      this.todoService.editTodo(id, todo).subscribe(res => {
-        console.log('Update Successful');
-      }, err => {
-        this.editTodo(todo);
-        alert('Update Failed');
-      });
+      this.todoService.updateTodo(todo);
 
     }
   }
 
 
   doneTodo(todo: Todo) {
-    todo.status = 'Done';
-    this.todoService.editTodo(todo._id, todo)
+    this.todoService.doneTodo(todo);
   }
 
   submitTodo(event, todo: Todo) {
@@ -70,9 +60,7 @@ export class AppComponent implements OnInit {
   }
 
   deleteTodo(todo: Todo) {
-    this.todoService.deleteTodo(todo._id).subscribe(res => {
-      // this.todosList.splice(this.todosList.indexOf(todo), 1);
-    });
+    this.todoService.deleteTodo(todo)
   }
 
 

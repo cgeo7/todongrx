@@ -27,7 +27,7 @@ export const todosReducer = (state: TodoState = initialState, action: TodoAction
     case TodoActions.DELETE_TODO: {
       const todoId = action.payload.todoId;
       const todos = Object.keys(state.todosEntities)
-        .filter(k => k === todoId)
+        .filter(k => k !== todoId)
         .reduce((acc, key) => {
             acc[key] = state.todosEntities[key];
             return acc;

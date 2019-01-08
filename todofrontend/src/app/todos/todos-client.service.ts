@@ -6,7 +6,7 @@ import {Todo} from '../models/todo.model';
 @Injectable({
   providedIn: 'root'
 })
-export class TodosService {
+export class TodosClient {
 
   private readonly baseUrl = 'api/todos';
 
@@ -22,7 +22,7 @@ export class TodosService {
     return this.http.get<Todo[]>(this.baseUrl);
   }
 
-  editTodo(id: string, todo: Todo) {
+  editTodo(todo: Todo, id : string = todo._id) : Observable<any> {
     let editUrl = `${this.baseUrl}/${id}`;
     return this.http.put(editUrl, todo);
   }

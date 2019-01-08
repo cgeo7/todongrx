@@ -5,6 +5,7 @@ export enum TodoActions {
   REQUESTED_TODOS = '[TODOS] Requested Todos',
   REQUESTED_TODOS_SUCCESS = '[API] Requested Todos Success',
   CREATE_TODO = '[TODOS] Create Todo',
+  CREATE_TODO_SUCCESS = '[TODOS] Create Todo Success',
   EDIT_TODO = '[TODOS] Edit Todo',
   DELETE_TODO = '[TODO] Delete Todo',
   DONE_TODO = '[TODO] Done Todo'
@@ -22,6 +23,11 @@ export class RequestedTodosSuccess implements Action {
 
 export class CreateTodo implements Action {
   readonly type = TodoActions.CREATE_TODO;
+  constructor(public readonly payload: {todo: Todo}) {}
+}
+
+export class CreateTodoSuccess implements Action {
+  readonly type = TodoActions.CREATE_TODO_SUCCESS;
   constructor(public readonly payload: {todo: Todo}) {}
 }
 
@@ -45,6 +51,7 @@ export type TodoActionsUnion =
   RequestedTodos |
   RequestedTodosSuccess |
   CreateTodo |
+  CreateTodoSuccess |
   EditTodo|
   DeleteTodo |
   DoneTodo
